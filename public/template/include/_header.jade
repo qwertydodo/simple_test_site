@@ -1,0 +1,18 @@
+block variables
+- menu = [{key: 'index', nm: 'Main page', path: 'index.html'}, {key: 'news', nm: 'News', path: 'news.html'}]
+header
+    .row
+        .logo.col-md-3
+            .logo_top The Best News on
+            .logo_bottom YourNews
+        .col-md-5.pull-right
+            nav.nav_main-container
+                ul
+                    each item in menu
+                        if menuSelected == item.key
+                            li.nav_main-active
+                                a(href=item.path)= item.nm
+                        else 
+                            if menuSelected == item.key
+                            li
+                                a(href=item.path)= item.nm

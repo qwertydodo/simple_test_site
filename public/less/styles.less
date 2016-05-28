@@ -1,0 +1,133 @@
+@bg-color: #ebeae6;
+@bg-img: url('../media/img/bg.jpg');
+@font-color-main: #8c8c8c;
+@font-color-header: #d14343;
+@font-color-unactive: #bebebe;
+@font-header: BebasNeue;
+@font-text: Helvetica;
+@footer-stick: 50px;
+
+@font-face {
+	font-family: 'BebasNeue';
+	src: url('../media/font/BebasNeue_Regular.otf');
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+	background-image: @bg-img;
+	background-color:  @bg-color;
+	font: 16px @font-text;
+	color: @font-color-main;
+}
+
+
+#wrapper {
+	margin: 40px auto @footer-stick auto;
+	width: 740px;
+	height: 100%;
+}
+
+.logo {
+	.logo_top {
+		color: @font-color-header;
+		font: 20px @font-header;
+		margin-bottom: -10px;
+	}
+
+	.logo_bottom {
+		font: 40px @font-header;
+		text-decoration: underline;
+		font-weight: bold; 
+	}
+}
+
+.nav_main-container {
+	float: right;
+
+	li {
+		display: inline-block;
+		margin-left: 15px;
+	}
+
+	li.nav_main-active {
+		a {
+			color: @font-color-main;
+			border-bottom: 3px solid;
+		}
+	}
+
+	a {
+		color: @font-color-unactive;
+		font: 24px @font-header;
+	}
+
+	a:hover  {
+		color: @font-color-main;
+		text-decoration: none;
+	}
+}
+
+
+.information_big {
+	margin-top: 30px;
+	font:40px @font-text;
+	text-align: center;
+}
+
+main {
+	margin-top: 30px;
+}
+
+.newsItem_container {
+	margin-bottom: 10px;
+	border-top: solid @font-color-unactive 3px;
+	text-align: justify;
+
+	.newsItem_img {
+		float: left;
+		margin: 10px;
+
+		img {
+			box-shadow: -4px 5px 30px #ccc;
+		}
+	}
+
+	h1.newsItem_field:hover {
+		color: darken(@font-color-header, 10%);
+		cursor: pointer;
+	}
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: @footer-stick;
+    width: 100%;
+}
+
+.text_engraved {
+	text-shadow: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.7);
+}
+
+.text_bolder {
+	font-weight: 600;
+}
+
+.text_caption {
+	font-size: 12px;
+	font-style: italic;
+}
+
+h1 {
+	margin-bottom: 0;
+	font: 26px BebasNeue;
+    text-decoration: underline;
+    font-weight: bold;
+    color: @font-color-header;
+}
+

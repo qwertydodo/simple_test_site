@@ -1,0 +1,7 @@
+{
+	"name": "news_site",
+	"dependencies": {
+    	"bootstrap": "3.3.6",
+    	"bootstrap3-dialog": "1.35.1"
+  	}	
+}

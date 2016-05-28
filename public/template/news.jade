@@ -1,0 +1,22 @@
+extends ./_layout.jade
+block variables
+    -var pageTitle = 'News'
+    -    menuSelected = 'news'
+block content
+    //ul#newsListContainer 
+        li.newsItem_container
+            .newsItem_img 
+                img(src='img/news.jpg')
+            h1.newsItem_field Тест хедер
+            .newsItem_field.text_caption Дата
+            .newsItem_field Текст
+        div
+            button На главную
+            button Редактировать
+
+
+block scripts
+    script(src="./js/modelNews.js")
+    script(src="./js/viewNews.js")
+    script(src="./js/controllerNews.js")
+    script(src="./js/news.js")
