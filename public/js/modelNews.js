@@ -21,7 +21,7 @@ var app = (function(app) {
 		};
 	}
 
-	// Get single or all news by id
+	// Get single by id news  or all news
 	ModelNews.prototype.getNews = function(id) {
 		var opts = {
 			url: 'news/' + (id ? id : '')
@@ -30,10 +30,14 @@ var app = (function(app) {
 		return app.utils.ajax(opts);
 	};
 
-	ModelNews.prototype.validateSingleNews = function(row) {
-		var errors = [];
+	ModelNews.prototype.validateSingleNews = function(fieldValues) {
+		var news = this,
+			errors = [];
 
-		for 
+		for (fileld in news.fields) {
+
+		}
+
 	};
 
 	app.models = app.models || {};

@@ -67,9 +67,23 @@ var app = (function(app) {
         }
 	};
 
+	app.utils.getFormData = function(form) {
+		var fields = form.getElementsByClassName('form-field'),
+			fieldNm,
+			fieldsValue = {};
+
+		for(var i = 0; i < fields.length; i++) {
+            fieldNm = fields[i].name;
+            fieldsValue[fieldNm] = fields[i].value;
+        }
+
+        return fieldsValue;
+	};
+
 	app.utils.addErrorFieldForm = function(opts) {
 
 	};	
 	
 	return app;
+
 }) (app || {}) ;
