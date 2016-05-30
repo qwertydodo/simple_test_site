@@ -6,9 +6,17 @@ var app = (function(app) {
     }
 
     ViewNews.prototype.setAllNews = function(rows) {
-        var news = this;
+        var news = this,
+            newsListContainer =  news.container.getElementsByClassName('newsListContainer')[0];
 
-        news.container.innerHTML = '';
+        //If exists list with news - remove
+        if (newsListContainer) {
+           newsListContainer.parentNode.removeChild(newsListContainer);
+        }
+
+        //Add panel with filtering, ordering and etc.
+        //news.container.appendChild( news.getElementManagerDataPanel());
+        //Add list with news
         news.container.appendChild( news.getElementListNews(rows) );
     };
 
@@ -51,7 +59,7 @@ var app = (function(app) {
                 isFullText: false
             }; 
 
-        ul.id = 'newsListContainer';
+        ul.className = 'newsListContainer';
 
         rows.forEach( function(row, i) {
             newsData.row = row;
@@ -70,10 +78,10 @@ var app = (function(app) {
 
         container.className = 'newsItem_actions';
 
-        buttonBack.className = 'newsItem_button-back';
+        buttonBack.className = 'newsItem_button-back btn btn-default';
         buttonBack.innerHTML = 'Back';
 
-        buttonEdit.className = 'newsItem_button-edit';
+        buttonEdit.className = 'newsItem_button-edit btn btn-default';
         buttonEdit.innerHTML = 'Edit';
 
         container.appendChild(buttonBack);
@@ -103,20 +111,27 @@ var app = (function(app) {
     ViewNews.prototype.showEditDialog = function(dlgData) {
         var news = this,
             dlgOpts = {
-                data: dlgData.row.id,
+                data: { id: dlgData.row.id },
                 title: 'Edit news',
-                form: null
+                form: null,
+                onSubmit: dlgData.onSubmit
             },
             dlg;
 
         dlg = app.utils.getEditDlg(dlgOpts);
 
         news.getElementEditDialogContent(dlgData.row)
-            .then(function (form) {
+            .then(function(form) {
                 dlg.setMessage(form);
                 dlg.open();
             })
             .catch( news.showError.bind(news) );
+    };
+
+    ViewNews.prototype.clearContainer = function() {
+        var news = this;
+
+        news.container.innerHTML = '';
     };
 
     //Get edit news tempalte from server and fill by news data
@@ -133,7 +148,7 @@ var app = (function(app) {
 
         return app.utils
             .ajax(ajaxOpts)
-            .then(function (html) {
+            .then(function(html) {
                 form.innerHTML = html;
                 app.utils.fillForm(form, row);
 
@@ -141,6 +156,11 @@ var app = (function(app) {
             });
     };
 
+    ViewNews.prototype.getElementManagerDataPanel = function() {
+        var news = this;
+    };
+
+    //the kind of common error, overlay the screen
     ViewNews.prototype.showError = function(data) {
         alert(data);
     };

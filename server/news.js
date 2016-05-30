@@ -25,10 +25,16 @@ News.prototype.update = function(id) {
 	var newsItem = dataNews[id-1];
 
 	newsItem.header = news.params.header;
+	newsItem.prevText = news.params.prevText;
 	newsItem.text = news.params.text;
 	newsItem.dt = news.params.dt;
 
 	fs.writeFileSync('./news.json', JSON.stringify(dataNews));
+
+	news.response({
+		status: true,
+		msg: 'Edited successful id = ' + id
+	});
 };
 
 

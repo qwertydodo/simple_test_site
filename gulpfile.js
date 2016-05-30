@@ -105,7 +105,7 @@ gulp.task('server', function () {
         .pipe( jshint.reporter('gulp-jshint-file-reporter') );
 });*/
 
-gulp.task('watch', ['build', 'browserSync', 'server'], function () {
+gulp.task('watch', ['build', 'browserSync'], function () {
     //gulp.watch(FOLDER_DEV + '/*.html', ['html']);
 
     gulp.watch(FOLDER_DEV + '/js/*.js', ['js']);

@@ -34,11 +34,11 @@ var app = (function(app) {
             buttons: [{
                         icon: 'glyphicon glyphicon-send',
                         label: 'Update',
-                        autospin: true,
+                        autospin: false,
                         action: function(dlg){
-                            dlg.enableButtons(false);
-                            dlg.setClosable(false);
-                            //opts.onSubmit();
+                            //dlg.enableButtons(false);
+                            //dlg.setClosable(false);
+                            opts.onSubmit(dlg);
                         }
                     }, {
                         label: 'Close',
@@ -57,6 +57,7 @@ var app = (function(app) {
 		return dlg;
 	};
 
+	//Fill the form by data from server
 	app.utils.fillForm = function(form, row) {
 		var fields = form.getElementsByClassName('form-field'),
             fieldNm;
@@ -67,6 +68,7 @@ var app = (function(app) {
         }
 	};
 
+	//Get data from form fields by class 'form-field'
 	app.utils.getFormData = function(form) {
 		var fields = form.getElementsByClassName('form-field'),
 			fieldNm,
@@ -80,9 +82,74 @@ var app = (function(app) {
         return fieldsValue;
 	};
 
-	app.utils.addErrorFieldForm = function(opts) {
+	app.utils.validator = {
+		//if error - return object with error
+		checkRequired: function(field, value) {
+			if (value.toString().trim() === '') {
+				return {field: field, type: 'required'};
+			} else {
+				return false;
+			}
+		},
+		showErrors: function(errors, container) {
+			errors.forEach( function(error, i) {
+				if (error.type === 'required') {
+					app.utils.validator.showRequiredError(error.field, container);
+				}
+			});
+		},
+		//Base function to show error. Gets options and builds by them error 
+		showFieldError: function(obj) {
+			var opts = {
+				el: '',
+				msg: '',
+				errorClass: ''
+			};
 
-	};	
+			$.extend(opts, obj);
+
+			var spanError = document.createElement('span'),
+				formGroup = opts.el.closest('.form-group');
+
+			spanError.className = 'help-block ' + opts.errorClass;
+			spanError.innerHTML = opts.msg;
+
+			opts.el.parentNode.insertBefore(spanError, opts.el.nextSibling);
+
+			formGroup.classList.add('has-error');
+
+			opts.el.addEventListener('input', function onInput(e) {
+				spanError.parentNode.removeChild(spanError);
+				formGroup.classList.remove('has-error');
+
+				opts.el.removeEventListener('input', onInput);
+			});
+		},
+		showRequiredError: function(field, container) {
+			var opts = {
+				el: container.querySelectorAll('[name="' + field +'"]')[0],
+				msg: 'Field could not be empty',
+				errorClass: 'error-required'
+			};
+
+			app.utils.validator.showFieldError(opts);			
+		},
+		clearFormErrors: function(container) {
+			var spanErrors = Array.prototype.slice.call( container.getElementsByClassName('help-block') ),
+				formGroups = Array.prototype.slice.call( container.getElementsByClassName('has-error') ),
+				length;
+
+			//Remove error messages
+			for (var i = 0; i < spanErrors.length; i++) {
+				spanErrors[i].parentNode.removeChild(spanErrors[i]);
+			}
+
+			//Remove error class around input
+			for (i = 0; i < formGroups.length; i++) {
+				formGroups[i].classList.remove('has-error');
+			}
+		}
+	};
 	
 	return app;
 
