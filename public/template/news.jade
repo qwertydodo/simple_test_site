@@ -3,6 +3,18 @@ block variables
     -var pageTitle = 'News'
     -    menuSelected = 'news'
 block content
+    //.newsDataManager_container
+        span Order By
+        select.newsDataManager_order
+            option(value='none') None
+            option(value='dt_asc') Ascending Date
+            option(value='dt_desc') Descending Date
+        span Filter By
+        select.newsDataManager_filter
+            option(value='none') None
+            option(value='category_music') Music
+            option(value='category_sport') Sport
+            option(value='category_social') Social
     //ul#newsListContainer 
         li.newsItem_container
             .newsItem_img 

@@ -3,32 +3,32 @@ var app = (function(app) {
 
 	var URL_SERVER = 'http://localhost:5000/';
 	
-	app.utils.ajax = function(opts) {
+	app.utils.ajax = function(data) {
 		return new Promise(function (resolve, reject) {
-			var def = {
+			var opts = {
 				type: 'GET',
 				dataType: 'json',
 				data: {},
 				isServer: true
 			};
 
-			$.extend(def, opts);
+			$.extend(opts, data);
 
 			$.ajax({
-				url: (def.isServer ? URL_SERVER : '') + def.url,
-				type: def.type,
-				dataType: def.dataType,
-				data: def.data
-			}).done(function(data) {
-				if (data.error) { reject(data.error); }
-				resolve(data.rows || data);
+				url: (opts.isServer ? URL_SERVER : '') + opts.url,
+				type: opts.type,
+				dataType: opts.dataType,
+				data: opts.data
+			}).done(function(res) {
+				if (res.error) { reject(res.error); }
+				resolve(res.rows || res);
 			});
 
 		});
 	};
 
 	app.utils.getEditDlg = function(opts) {
-		var def = {
+		var dlg = {
 			closeByBackdrop: false,
             type: BootstrapDialog.TYPE_DEFAULT,
             buttons: [{
@@ -52,7 +52,7 @@ var app = (function(app) {
             message: $(opts.form)
 		};
 
-		var dlg = new BootstrapDialog(def);
+		var dlg = new BootstrapDialog(dlg);
 
 		return dlg;
 	};
@@ -82,73 +82,31 @@ var app = (function(app) {
         return fieldsValue;
 	};
 
-	app.utils.validator = {
-		//if error - return object with error
-		checkRequired: function(field, value) {
-			if (value.toString().trim() === '') {
-				return {field: field, type: 'required'};
-			} else {
-				return false;
-			}
-		},
-		showErrors: function(errors, container) {
-			errors.forEach( function(error, i) {
-				if (error.type === 'required') {
-					app.utils.validator.showRequiredError(error.field, container);
-				}
-			});
-		},
-		//Base function to show error. Gets options and builds by them error 
-		showFieldError: function(obj) {
-			var opts = {
-				el: '',
-				msg: '',
-				errorClass: ''
-			};
-
-			$.extend(opts, obj);
-
-			var spanError = document.createElement('span'),
-				formGroup = opts.el.closest('.form-group');
-
-			spanError.className = 'help-block ' + opts.errorClass;
-			spanError.innerHTML = opts.msg;
-
-			opts.el.parentNode.insertBefore(spanError, opts.el.nextSibling);
-
-			formGroup.classList.add('has-error');
-
-			opts.el.addEventListener('input', function onInput(e) {
-				spanError.parentNode.removeChild(spanError);
-				formGroup.classList.remove('has-error');
-
-				opts.el.removeEventListener('input', onInput);
-			});
-		},
-		showRequiredError: function(field, container) {
-			var opts = {
-				el: container.querySelectorAll('[name="' + field +'"]')[0],
-				msg: 'Field could not be empty',
-				errorClass: 'error-required'
-			};
-
-			app.utils.validator.showFieldError(opts);			
-		},
-		clearFormErrors: function(container) {
-			var spanErrors = Array.prototype.slice.call( container.getElementsByClassName('help-block') ),
-				formGroups = Array.prototype.slice.call( container.getElementsByClassName('has-error') ),
-				length;
-
-			//Remove error messages
-			for (var i = 0; i < spanErrors.length; i++) {
-				spanErrors[i].parentNode.removeChild(spanErrors[i]);
-			}
-
-			//Remove error class around input
-			for (i = 0; i < formGroups.length; i++) {
-				formGroups[i].classList.remove('has-error');
-			}
+	//Create select by opts
+	/*
+		opts = {
+			selectClass: ''
+			options: [
+				{value: '', text: ''}
+			]
 		}
+	*/
+	app.utils.getSelect = function(opts) {
+		var select = document.createElement('select'),
+			option;
+
+		select.className = opts.selectClass;
+
+		opts.options.forEach( function(optionObj, index) {
+			option = document.createElement('option');
+
+			option.innerHTML = optionObj.text;
+			option.value = optionObj.value;
+
+			select.appendChild(option);
+		});
+
+		return select;
 	};
 	
 	return app;

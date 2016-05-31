@@ -7,15 +7,18 @@ var app = (function(app) {
 
     ViewNews.prototype.setAllNews = function(rows) {
         var news = this,
+            dataManagerPanel = news.container.getElementsByClassName('newsListContainer')[0],
             newsListContainer =  news.container.getElementsByClassName('newsListContainer')[0];
+
+        // if doesn't exist dataManagerPaner - add
+        if (!dataManagerPanel) {
+            news.container.appendChild( news.getElementDataManagerPanel());
+        }
 
         //If exists list with news - remove
         if (newsListContainer) {
            newsListContainer.parentNode.removeChild(newsListContainer);
         }
-
-        //Add panel with filtering, ordering and etc.
-        //news.container.appendChild( news.getElementManagerDataPanel());
         //Add list with news
         news.container.appendChild( news.getElementListNews(rows) );
     };
@@ -41,7 +44,10 @@ var app = (function(app) {
                 '<img src="media/img/' + row.img + '">' +
             '</div>' +
             '<div> <h1 class="newsItem_field newsItem_field-header">' + row.header + '</h1> </div>' +
-            '<div> <span class="newsItem_field newsItem_field-dt text_caption">' + row.dt + '</span> </div>' +
+            '<div>' +
+            '      <span class="newsItem_field newsItem_field-dt text_caption">' + row.dt + '</span> ' + 
+            '      <span class="newsItem_field newsItem_field-category tag_default">' + row.category + '</span> ' +
+            '</div>'  + 
             '<div> <span class="newsItem_field newsItem_field-text">' + (newsData.isFullText ? row.text : row.prevtext) + '</span> </div>'
         ; 
 
@@ -99,7 +105,7 @@ var app = (function(app) {
                 isFullText: true
             };
         
-        news.container.innerHTML = '';
+        news.clearContainer();
 
         var article = news.getElementSingleNews(newsData);
         article.appendChild( news.getElementActionButtons() );
@@ -156,9 +162,73 @@ var app = (function(app) {
             });
     };
 
-    ViewNews.prototype.getElementManagerDataPanel = function() {
-        var news = this;
+    ViewNews.prototype.getElementDataManagerPanel = function() {
+        var news = this,
+            container = document.createElement('div'),
+            filter = news.getElementFilter(),
+            order = news.getElementOrder();
+
+        container.className = 'newsDataManager_container';
+
+        container.appendChild(filter);
+        container.appendChild(order);
+
+        return container;
     };
+
+    ViewNews.prototype.getElementOrder = function() {
+        var news = this,
+            fragment = document.createDocumentFragment(),
+            span = document.createElement('span'),
+            select,
+            opts = {};
+
+        span.innerHTML = 'Order By';
+
+        opts = {
+            selectClass: 'newsDataManager_order',
+            options: [
+                { value: 'none', text: 'None' },
+                { value: 'dt_asc', text: 'Ascending Date' },
+                { value: 'dt_desc', text: 'Descending Date' },
+            ]
+        };
+           
+        select = app.utils.getSelect(opts); 
+
+        fragment.appendChild(span);
+        fragment.appendChild(select);
+
+        return fragment;
+    };
+
+    ViewNews.prototype.getElementFilter = function() {
+        var news = this,
+            fragment = document.createDocumentFragment(),
+            span = document.createElement('span'),
+            select,
+            opts = {};
+
+        span.innerHTML = 'Filter by';
+
+        opts = {
+            selectClass: 'newsDataManager_filter',
+            options: [
+                { value: 'none', text: 'None' },
+                { value: 'category_music', text: 'Music' },
+                { value: 'category_sport', text: 'Sport' },
+                { value: 'category_social', text: 'Social' }
+            ]
+        };
+
+        select = app.utils.getSelect(opts); 
+
+        fragment.appendChild(span);
+        fragment.appendChild(select);
+
+        return fragment;
+    };
+
 
     //the kind of common error, overlay the screen
     ViewNews.prototype.showError = function(data) {

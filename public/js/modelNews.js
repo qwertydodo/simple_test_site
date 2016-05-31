@@ -23,14 +23,15 @@ var app = (function(app) {
 		this.url = 'news';
 	}
 
-	// Get single by id news or all news
+	// Get single by id news or all news, maybe with filter/order
 	ModelNews.prototype.getNews = function(data) {
 		var news = this;
 		data = data || {};
 		
+		debugger
 		var opts = {
 			url: news.url + '/' + (data.id ? data.id : ''),
-			data: data
+			data: data.params
 		};
 
 		return app.utils.ajax(opts);

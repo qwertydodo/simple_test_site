@@ -81,6 +81,20 @@ body {
 main {
 	margin-top: 30px;
 }
+.newsDataManager_container {
+	margin: 10px;
+
+	span {
+		margin-right: 10px;
+		font: 18px @font-header;
+		color: @font-color-header;
+	}
+
+	select {
+		margin-right: 10px;
+		font: 16px @font-header;
+	}
+}
 
 .newsItem_container {
 	margin-bottom: 10px;
@@ -142,9 +156,16 @@ footer {
 
 h1 {
 	margin-bottom: 0;
-	font: 26px BebasNeue;
+	font: 26px @font-header;
     text-decoration: underline;
     font-weight: bold;
     color: @font-color-header;
 }
 
+.tag_default {
+	padding: 1px 5px;
+	border-radius: 6px;
+	background-color: white;
+
+	font: 14px @font-header;
+}
